@@ -1,0 +1,78 @@
+.form {
+  margin: auto auto;
+  max-width: 768px;
+  padding: 10px;
+}
+
+.heading {
+  margin-bottom: 16px;
+  font-size: 20px;
+  line-height: 28px;
+  color: #000;
+}
+
+.input {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  color: #000;
+}
+
+.dark {
+  color: #fff;
+}
+
+.input label {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.input input {
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border: 2px solid rgb(226, 221, 221);
+  line-height: 20px;
+  color: #000;
+  border-radius: 5px;
+}
+
+.input input:-internal-autofill-selected {
+  background-color: #fff !important;
+}
+
+.button {
+  width: 15%;
+  padding: 10px 15px;
+  margin-top: 10px;
+  background: rgb(230, 181, 92);
+  outline: none;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  color: #222;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  background: rgb(223, 169, 67);
+}
+
+.forget a {
+  color: rgb(2, 19, 100);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  padding-top: 5px;
+}
