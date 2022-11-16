@@ -3,17 +3,65 @@ import styles from '../../styles/ProductScreen.module.css';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
 import Image from 'next/image';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from '../../utils/Store';
 import db from '../../utils/db';
 import Product from '../../model/Product';
 import { useRouter } from 'next/router';
+import StarRatings from 'react-star-ratings';
+import { useSnackbar } from 'notistack';
+import { getError } from '../../utils/error';
 
 const ProductScreen = (props) => {
   const { product } = props;
   const { state, dispatch } = useContext(Store);
-  const darkMode = { state };
+  const { darkMode, userInfo } = state;
   const router = useRouter();
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post(
+        `/api/products/${product._id}/reviews`,
+        {
+          rating,
+          comment,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      setLoading(false);
+      enqueueSnackbar('Review submitted successfully', { variant: 'success' });
+      fetchReviews();
+    } catch (error) {
+      setLoading(false);
+      enqueueSnackbar(getError(error), { variant: 'errorr' });
+    }
+  };
+
+  const changeRatingHendler = (newRating) => {
+    setRating(newRating);
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/${product._id}/reviews`);
+      setReviews(data);
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
 
   if (!product) {
     return <div>Product Not Found!</div>;
@@ -61,9 +109,16 @@ const ProductScreen = (props) => {
               <p>Brand: {product.brand}</p>
             </li>
             <li className={styles.list}>
-              <p>
-                Rating: {product.rating} stars ({product.numReviews} reviews)
-              </p>
+              <StarRatings
+                rating={product.rating}
+                starRatedColor='#dfa943'
+                starDimension='25px'
+                name='rating'
+                starSpacing='0'
+              />
+              <Link href='#reviews' style={{ textDecoration: 'underline', color: '#f0c000' }}>
+                ({product.numReviews} reviews)
+              </Link>
             </li>
             <li className={styles.list}>
               <p>Description: {product.description}</p>
@@ -84,17 +139,92 @@ const ProductScreen = (props) => {
           </button>
         </div>
       </div>
+      <div className={styles.reviews} id='reviews'>
+        <ul className={styles.listUl}>
+          <li>
+            <h2 className={styles.heading}>Customer Reviews</h2>
+          </li>
+          <li className={styles.noReview}>{reviews.length === 0 && <p>No review</p>}</li>
+          {reviews.map((review) => (
+            <li key={review._id} className={styles.commentList}>
+              <div className={styles.rightBorder}>
+                <p>
+                  <strong>{review.name}</strong>
+                </p>
+                <p>{review.createdAt.substring(0, 10)}</p>
+              </div>
+              <div>
+                <StarRatings
+                  rating={review.rating}
+                  starRatedColor='#dfa943'
+                  starDimension='25px'
+                  name='rating'
+                  starSpacing='0'
+                />
+                <p>{review.comment}</p>
+              </div>
+            </li>
+          ))}
+          <li>
+            {userInfo ? (
+              <form onSubmit={submitHandler} className={styles.reviewForm}>
+                <ul>
+                  <li>
+                    <p>Leave your review</p>
+                  </li>
+                  <li>
+                    <label htmlFor='review'>Enter Comment</label>
+                    <textarea
+                      name='review'
+                      id=''
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder='Enter Comment'
+                    ></textarea>
+                  </li>
+                  <li>
+                    <StarRatings
+                      rating={rating}
+                      changeRating={changeRatingHendler}
+                      starRatedColor='#dfa943'
+                      starDimension='30px'
+                      name='rating'
+                      starSpacing='0'
+                      starHoverColor='#f0c000'
+                    />
+                  </li>
+                  <li>
+                    {loading && <p className={styles.loading}>Commenting...</p>}
+                    <button className={styles.button} style={{ marginTop: 0 }}>
+                      Submit
+                    </button>
+                  </li>
+                </ul>
+              </form>
+            ) : (
+              <li className={styles.noReview} style={{ fontSize: '18px', fontWeight: 500, letterSpacing: '1px' }}>
+                Please{' '}
+                <Link
+                  href={`/login?redirect=/product/${product.slug}`}
+                  style={{ color: '#dfa943', textDecoration: 'underline' }}
+                >
+                  login
+                </Link>{' '}
+                to write a review
+              </li>
+            )}
+          </li>
+        </ul>
+      </div>
     </Layout>
   );
 };
-
-export default ProductScreen;
 
 export async function getServerSideProps(context) {
   const { params } = context;
   const { slug } = params;
   await db.connect();
-  const product = await Product.findOne({ slug }).lean();
+  const product = await Product.findOne({ slug }, '-reviews').lean();
   await db.disconnect();
   return {
     props: {
@@ -102,3 +232,5 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+export default ProductScreen;
