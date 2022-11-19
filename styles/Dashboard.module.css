@@ -2,12 +2,13 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
+  min-height: 100vh;
 }
 
 .sideBar {
   padding: 10px 20px;
   height: fit-content;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
   border-radius: 10px;
 }
 
@@ -45,7 +46,7 @@
 
 .dash {
   grid-column: span 3;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
   padding: 20px 20px;
   border-radius: 10px;
 }
@@ -107,6 +108,11 @@
   color: #bf8313;
   font-weight: 700;
   letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.overflow {
+  overflow-x: auto;
 }
 
 .table {
@@ -133,11 +139,17 @@
 }
 
 .dark {
-  box-shadow: rgba(100, 100, 111, 0.3) 0px 5px 0px 15px;
+  box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
+  border-radius: 10px;
+}
+
+.darkBar {
+  box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
+  border-radius: 10px;
 }
 
 .btn {
-  width: auto;
+  width: fit-content;
   padding: 10px 15px;
   background: rgb(230, 181, 92);
   outline: none;
@@ -161,6 +173,7 @@
 
 .edit {
   background: #80ed34;
+  margin-right: 5px;
 }
 
 .edit:hover {
@@ -186,10 +199,6 @@
   display: flex;
   flex-direction: column;
   color: #000;
-}
-
-.dark {
-  color: #fff;
 }
 
 .input label {
@@ -220,7 +229,7 @@
 }
 
 .button {
-  width: 15%;
+  width: fit-content;
   padding: 10px 15px;
   margin-top: 10px;
   background: rgb(230, 181, 92);
@@ -258,4 +267,38 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .sideBar {
+    grid-column: span 4;
+  }
+
+  .dash {
+    grid-column: span 4;
+  }
+
+  .task {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dark {
+    box-shadow: none;
+  }
+
+  .darkMode {
+    box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
+    border-radius: 10px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .task {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .btn {
+    padding: 10px;
+    font-size: 12px;
+  }
 }

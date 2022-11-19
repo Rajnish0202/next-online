@@ -186,7 +186,7 @@ const Order = ({ params }) => {
       ) : (
         <div className={styles.cartItem}>
           <div className={styles.row}>
-            <div className={styles.overflow}>
+            <div className={darkMode ? `${styles.overflow} ${styles.dark}` : `${styles.overflow}`}>
               <h2 className={styles.heading}>Shipping Address</h2>
               <p>
                 {shippingAddress.fullName}, {shippingAddress.address}, {shippingAddress.city},{' '}
@@ -194,12 +194,12 @@ const Order = ({ params }) => {
               </p>
               <p>Status: {isDelivered ? `delivered at ${deliveredAt}` : 'not delivered'}</p>
             </div>
-            <div className={styles.overflow}>
+            <div className={darkMode ? `${styles.overflow} ${styles.dark}` : `${styles.overflow}`}>
               <h2 className={styles.heading}>Payment Method</h2>
               <p>{paymentMethod}</p>
               <p>Status: {isPaid ? `paid at ${paidAt}` : 'not paid'}</p>
             </div>
-            <div className={styles.overflow}>
+            <div className={darkMode ? `${styles.overflow} ${styles.dark}` : `${styles.overflow}`}>
               <h2 className={styles.heading}>Order Items</h2>
               <table className={styles.table}>
                 <thead className={styles.borderBottom}>

@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Layout from '../../../components/Layout';
 import styles from '../../../styles/Dashboard.module.css';
@@ -79,6 +79,8 @@ const ProductEdit = ({ params }) => {
           setValue('slug', data.slug);
           setValue('price', data.price);
           setValue('image', data.image);
+          setValue('featuredImage', data.featuredImage);
+          setIsFeaturd(data.isFeatured);
           setValue('category', data.category);
           setValue('brand', data.brand);
           setValue('countInStock', data.countInStock);
@@ -91,7 +93,17 @@ const ProductEdit = ({ params }) => {
     }
   }, [router, userInfo]);
 
-  const submitHandler = async ({ name, slug, price, image, category, brand, countInStock, description }) => {
+  const submitHandler = async ({
+    name,
+    slug,
+    price,
+    image,
+    category,
+    brand,
+    countInStock,
+    description,
+    featuredImage,
+  }) => {
     closeSnackbar();
 
     try {
@@ -105,6 +117,8 @@ const ProductEdit = ({ params }) => {
           image,
           category,
           brand,
+          isFeatured,
+          featuredImage,
           countInStock,
           description,
         },
@@ -141,11 +155,12 @@ const ProductEdit = ({ params }) => {
       enqueueSnackbar(getError(error), { variant: 'error' });
     }
   };
+  const [isFeatured, setIsFeaturd] = useState(false);
 
   return (
     <Layout title={`Edit Product ${productId}`}>
       <div className={styles.container}>
-        <div className={styles.sideBar}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark} ${styles.darkMode}` : `${styles.sideBar}`}>
           <ul>
             <Link href='/admin/dashboard' passHref>
               <li>Dashboard</li>
@@ -161,7 +176,7 @@ const ProductEdit = ({ params }) => {
             </Link>
           </ul>
         </div>
-        <div className={styles.dash}>
+        <div className={darkMode ? `${styles.dash} ${styles.dark} ${styles.darkMode}` : `${styles.dash}`}>
           <h1 className={styles.heading}>{`Product ${productId}`}</h1>
           {loading ? (
             <p className={styles.loading}>Loading...</p>
@@ -171,7 +186,7 @@ const ProductEdit = ({ params }) => {
             <div>
               <h2 className={styles.heading}>products</h2>
               <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='name'>Name</label>
                   <input
                     type='text'
@@ -183,7 +198,7 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.name && <div className={styles.error}>{errors.name.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='slug'>Slug</label>
                   <input
                     type='text'
@@ -195,7 +210,7 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.slug && <div className={styles.error}>{errors.slug.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='price'>Price</label>
                   <input
                     type='text'
@@ -207,7 +222,7 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.price && <div className={styles.error}>{errors.price.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='image'>Image</label>
                   <input
                     type='text'
@@ -219,12 +234,47 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.image && <div className={styles.error}>{errors.image.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='imageFile'>Upload Image</label>
                   <input type='file' id='imageFile' onChange={uploadHandler} style={{ cursor: 'pointer' }} />
                   {loadingUpload && <p>Uploading...</p>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
+                  <label htmlFor='featuredImage'>Featured Image</label>
+                  <input
+                    type='text'
+                    id='featuredImage'
+                    placeholder='Featured Image'
+                    {...register('featuredImage', {
+                      required: 'Featured Image is required!',
+                    })}
+                  />
+                  {errors.featuredImage && <div className={styles.error}>{errors.featuredImage.message}</div>}
+                </div>
+                <div className={styles.input}>
+                  <label htmlFor='imageFile'>Upload Featired Image</label>
+                  <input
+                    type='file'
+                    id='featuredImageFile'
+                    onChange={(e) => uploadHandler(e, 'featuredImage')}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  {loadingUpload && <p>Uploading...</p>}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0 10px 0' }}>
+                  <input
+                    type='checkbox'
+                    id='name'
+                    name='isFeatured'
+                    checked={isFeatured}
+                    onClick={(e) => setIsFeaturd(e.target.checked)}
+                    style={{ height: '18px', width: '18px' }}
+                  />
+                  <label htmlFor='isFeatured' style={{ marginLeft: '10px', fontSize: '16px', fontWeight: '500' }}>
+                    Is Featured
+                  </label>
+                </div>
+                <div className={styles.input}>
                   <label htmlFor='category'>Category</label>
                   <input
                     type='text'
@@ -236,7 +286,7 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.category && <div className={styles.error}>{errors.category.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='brand'>Brand</label>
                   <input
                     type='text'
@@ -248,7 +298,7 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.brand && <div className={styles.error}>{errors.brand.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='countInStock'>Count In Stock</label>
                   <input
                     type='text'
@@ -260,7 +310,7 @@ const ProductEdit = ({ params }) => {
                   />
                   {errors.countInStock && <div className={styles.error}>{errors.countInStock.message}</div>}
                 </div>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='description'>Description</label>
                   <textarea
                     type='texta'

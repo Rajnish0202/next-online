@@ -20,6 +20,7 @@ const Shipping = () => {
   const {
     userInfo,
     cart: { shippingAddress },
+    darkMode,
   } = state;
 
   useEffect(() => {
@@ -42,7 +43,10 @@ const Shipping = () => {
   return (
     <Layout title='Shipping Address'>
       <CheckoutWizard activeStep={1} />
-      <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className={darkMode ? `${styles.form} ${styles.dark}` : `${styles.form}`}
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <h1 className={styles.heading}>Shipping Address</h1>
         <div className={styles.input}>
           <label htmlFor='fullName'>Full Name</label>

@@ -1,21 +1,74 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.sideBar {
+  padding: 10px 20px;
+  height: fit-content;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+  border-radius: 10px;
+}
+
+.sideBar ul {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sideBar ul li {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 10px;
+}
+
+.sideBar ul li:hover {
+  background: gray;
+  color: #fff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.sideBar ul a {
+  width: 100%;
+}
+
+.formSection {
+  grid-column: span 3;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.active {
+  background: gray;
+  color: #fff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 .form {
   margin: auto auto;
   max-width: 768px;
   padding: 10px;
+  min-height: 100vh;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+  border-radius: 10px;
 }
 
 .heading {
   margin-bottom: 16px;
   font-size: 20px;
   line-height: 28px;
-  color: #000;
 }
 
 .input {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  color: #000;
 }
 
 .dark {
@@ -44,7 +97,7 @@
 }
 
 .button {
-  width: 15%;
+  width: fit-content;
   padding: 10px 15px;
   margin-top: 10px;
   background: rgb(230, 181, 92);
@@ -75,4 +128,18 @@
   font-size: 14px;
   line-height: 16px;
   padding-top: 5px;
+}
+
+.dark {
+  box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
+}
+
+@media screen and (max-width: 768px) {
+  .sideBar {
+    grid-column: span 4;
+  }
+
+  .formSection {
+    grid-column: span 4;
+  }
 }

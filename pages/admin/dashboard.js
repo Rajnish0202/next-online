@@ -31,7 +31,7 @@ function reducer(state, action) {
 
 const AdminDashboard = () => {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, darkMode } = state;
   const router = useRouter();
 
   const [{ loading, error, summary }, dispatch] = useReducer(reducer, {
@@ -61,7 +61,7 @@ const AdminDashboard = () => {
   return (
     <Layout title='Admin Dashboard'>
       <div className={styles.container}>
-        <div className={styles.sideBar}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark} ${styles.darkMode}` : `${styles.sideBar}`}>
           <ul>
             <Link href='/admin/dashboard' passHref>
               <li className={styles.active}>Dashboard</li>
@@ -85,44 +85,46 @@ const AdminDashboard = () => {
             <p className={styles.error}>{error}</p>
           ) : (
             <div>
-              <div className={styles.task}>
-                <div className={styles.card}>
+              <div className={darkMode ? `${styles.task} ${styles.dark}` : `${styles.task}`}>
+                <div className={darkMode ? `${styles.card} ${styles.darkMode}` : `${styles.card}`}>
                   <p className={styles.count}>${summary.ordersPrice}</p>
                   <p className={styles.text}>Sales</p>
                   <Link href='/admin/orders'>View sales</Link>
                 </div>
-                <div className={styles.card}>
+                <div className={darkMode ? `${styles.card} ${styles.darkMode}` : `${styles.card}`}>
                   <p className={styles.count}>{summary.ordersCount}</p>
                   <p className={styles.text}>Orders</p>
                   <Link href='/admin/orders'>View orders</Link>
                 </div>
-                <div className={styles.card}>
+                <div className={darkMode ? `${styles.card} ${styles.darkMode}` : `${styles.card}`}>
                   <p className={styles.count}>{summary.productsCount}</p>
                   <p className={styles.text}>Products</p>
                   <Link href='/admin/products'>View products</Link>
                 </div>
-                <div className={styles.card}>
+                <div className={darkMode ? `${styles.card} ${styles.darkMode}` : `${styles.card}`}>
                   <p className={styles.count}>{summary.usersCount}</p>
                   <p className={styles.text}>Users</p>
                   <Link href='/admin/users'>View users</Link>
                 </div>
               </div>
-              <h2 className={styles.heading}>Sales Report</h2>
-              <Bar
-                data={{
-                  labels: summary.salesData.map((x) => x._id),
-                  datasets: [
-                    {
-                      label: 'Sales',
-                      backgroundColor: 'rgba(162,222,208,1)',
-                      data: summary.salesData.map((x) => x.totalSales),
-                    },
-                  ],
-                }}
-                options={{
-                  legend: { display: true, position: 'right' },
-                }}
-              ></Bar>
+              <div className={darkMode ? `${styles.darkBar}` : ''}>
+                <h2 className={styles.heading}>Sales Report</h2>
+                <Bar
+                  data={{
+                    labels: summary.salesData.map((x) => x._id),
+                    datasets: [
+                      {
+                        label: 'Sales',
+                        backgroundColor: 'rgba(162,222,208,1)',
+                        data: summary.salesData.map((x) => x.totalSales),
+                      },
+                    ],
+                  }}
+                  options={{
+                    legend: { display: true, position: 'right' },
+                  }}
+                ></Bar>
+              </div>
             </div>
           )}
         </div>

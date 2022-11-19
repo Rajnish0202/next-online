@@ -114,7 +114,7 @@ const UserEdit = ({ params }) => {
   return (
     <Layout title={`Edit User ${userId}`}>
       <div className={styles.container}>
-        <div className={styles.sideBar}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark} ${styles.darkMode}` : `${styles.sideBar}`}>
           <ul>
             <Link href='/admin/dashboard' passHref>
               <li>Dashboard</li>
@@ -130,7 +130,7 @@ const UserEdit = ({ params }) => {
             </Link>
           </ul>
         </div>
-        <div className={styles.dash}>
+        <div className={darkMode ? `${styles.dash} ${styles.dark} ${styles.darkMode}` : `${styles.dash}`}>
           <h1 className={styles.heading}>{`User ${userId}`}</h1>
           {loading ? (
             <p className={styles.loading}>Loading...</p>
@@ -140,7 +140,7 @@ const UserEdit = ({ params }) => {
             <div>
               <h2 className={styles.heading}>users</h2>
               <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
-                <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+                <div className={styles.input}>
                   <label htmlFor='name'>Name</label>
                   <input
                     type='text'

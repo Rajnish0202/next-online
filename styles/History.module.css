@@ -1,5 +1,61 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.sideBar {
+  padding: 10px 20px;
+  height: fit-content;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+  border-radius: 10px;
+}
+
+.sideBar ul {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sideBar ul li {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 10px;
+}
+
+.sideBar ul li:hover {
+  background: gray;
+  color: #fff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.sideBar ul a {
+  width: 100%;
+}
+
+.section {
+  grid-column: span 3;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.dark {
+  box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
+}
+
+.active {
+  background: gray;
+  color: #fff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 .heading {
-  margin-bottom: 2rem;
+  margin: 1rem 0;
   font-size: 20px;
   line-height: 28px;
   text-transform: capitalize;
@@ -7,21 +63,19 @@
 
 .cartItem {
   display: grid;
-  /* grid-template-columns: repeat(4, minmax(0, 1fr)); */
   gap: 20px;
+  min-height: 100vh;
 }
 
 .row {
-  overflow-x: auto;
-  /* grid-column: span 3; */
   padding: 10px;
 }
 
 .overflow {
   padding: 20px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 10px;
   margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .table {
@@ -45,10 +99,6 @@
 
 .left {
   text-align: left;
-}
-
-.dark {
-  box-shadow: rgba(100, 100, 111, 0.3) 0px 5px 0px 15px;
 }
 
 .btn {
@@ -83,4 +133,39 @@
   font-weight: 500;
   letter-spacing: 1px;
   color: #f04040;
+}
+
+@media screen and (max-width: 768px) {
+  .overflow {
+    padding: 10px;
+  }
+
+  .table th {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .name {
+    padding: 15px 10px;
+    font-size: 14px;
+  }
+
+  .sideBar {
+    grid-column: span 4;
+  }
+
+  .section {
+    grid-column: span 4;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .name {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .name {
+    font-size: 10px;
+  }
 }

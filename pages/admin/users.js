@@ -40,7 +40,7 @@ function reducer(state, action) {
 
 const AdminUsers = () => {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, darkMode } = state;
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -95,7 +95,7 @@ const AdminUsers = () => {
   return (
     <Layout title='Users'>
       <div className={styles.container}>
-        <div className={styles.sideBar}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark} ${styles.darkMode}` : `${styles.sideBar}`}>
           <ul>
             <Link href='/admin/dashboard' passHref>
               <li>Dashboard</li>
@@ -111,7 +111,7 @@ const AdminUsers = () => {
             </Link>
           </ul>
         </div>
-        <div className={styles.dash}>
+        <div className={darkMode ? `${styles.dash} ${styles.dark} ${styles.darkMode}` : `${styles.dash}`}>
           <h1 className={styles.heading}>Admin Dashboard</h1>
           {loading ? (
             <p className={styles.loading}>Loading...</p>
@@ -121,37 +121,39 @@ const AdminUsers = () => {
             <div>
               <h2 className={styles.heading}>users</h2>
               {loadingDelete && <p className={styles.loading}>Deleting...</p>}
-              <table className={styles.table}>
-                <thead className={styles.borderBottom}>
-                  <tr>
-                    <th className={styles.left}>ID</th>
-                    <th className={styles.left}>NAME</th>
-                    <th className={styles.left}>EMAIL</th>
-                    <th className={styles.left}>ISADMIN</th>
-                    <th className={styles.left}>ACTION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user._id} className={styles.borderBottom}>
-                      <td className={styles.name} title={user._id}>
-                        {user._id.substring(20, 24)}
-                      </td>
-                      <td className={styles.name}>{user.name}</td>
-                      <td className={styles.name}>{user.email}</td>
-                      <td className={styles.name}>{user.isAdmin ? 'Yes' : 'No'}</td>
-                      <td className={`${styles.name} ${styles.action}`}>
-                        <Link href={`/admin/user/${user._id}`} passHref>
-                          <button className={`${styles.btn} ${styles.edit}`}>Edit</button>
-                        </Link>
-                        <button className={`${styles.btn} ${styles.del}`} onClick={() => deleteHandler(user._id)}>
-                          Delete
-                        </button>
-                      </td>
+              <div className={styles.overflow}>
+                <table className={styles.table}>
+                  <thead className={styles.borderBottom}>
+                    <tr>
+                      <th className={styles.left}>ID</th>
+                      <th className={styles.left}>NAME</th>
+                      <th className={styles.left}>EMAIL</th>
+                      <th className={styles.left}>ISADMIN</th>
+                      <th className={styles.left}>ACTION</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user._id} className={styles.borderBottom}>
+                        <td className={styles.name} title={user._id}>
+                          {user._id.substring(20, 24)}
+                        </td>
+                        <td className={styles.name}>{user.name}</td>
+                        <td className={styles.name}>{user.email}</td>
+                        <td className={styles.name}>{user.isAdmin ? 'Yes' : 'No'}</td>
+                        <td className={`${styles.name} ${styles.action}`}>
+                          <Link href={`/admin/user/${user._id}`} passHref>
+                            <button className={`${styles.btn} ${styles.edit}`}>Edit</button>
+                          </Link>
+                          <button className={`${styles.btn} ${styles.del}`} onClick={() => deleteHandler(user._id)}>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>

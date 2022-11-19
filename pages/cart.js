@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FaRegWindowClose } from 'react-icons/fa';
+import { useSnackbar } from 'notistack';
 
 const CartScreen = () => {
   const router = useRouter();
@@ -16,6 +17,8 @@ const CartScreen = () => {
     cart: { cartItems },
     darkMode,
   } = state;
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const count = cartItems.reduce((a, c) => a + c.quantity, 0);
 
@@ -27,7 +30,7 @@ const CartScreen = () => {
     const { data } = await axios.get(`/api/products/${item._id}`);
 
     if (data.countInStock < quantity) {
-      alert('Sorry, Product is out of Stock!');
+      enqueueSnackbar('Sorry, Product is out of Stock!', { variant: 'error' });
       return;
     }
 

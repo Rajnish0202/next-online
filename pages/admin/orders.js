@@ -27,7 +27,7 @@ function reducer(state, action) {
 
 const AdminOrders = () => {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, darkMode } = state;
   const router = useRouter();
 
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
@@ -57,7 +57,7 @@ const AdminOrders = () => {
   return (
     <Layout title='Orders'>
       <div className={styles.container}>
-        <div className={styles.sideBar}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark} ${styles.darkMode}` : `${styles.sideBar}`}>
           <ul>
             <Link href='/admin/dashboard' passHref>
               <li>Dashboard</li>
@@ -73,14 +73,14 @@ const AdminOrders = () => {
             </Link>
           </ul>
         </div>
-        <div className={styles.dash}>
+        <div className={darkMode ? `${styles.dash} ${styles.dark} ${styles.darkMode}` : `${styles.dash}`}>
           <h1 className={styles.heading}>Admin Dashboard</h1>
           {loading ? (
             <p className={styles.loading}>Loading...</p>
           ) : error ? (
             <p className={styles.error}>{error}</p>
           ) : (
-            <div>
+            <div className={styles.overflow}>
               <h2 className={styles.heading}>Orders</h2>
               <table className={styles.table}>
                 <thead className={styles.borderBottom}>

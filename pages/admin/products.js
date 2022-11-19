@@ -49,7 +49,7 @@ function reducer(state, action) {
 
 const AdminProducts = () => {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, darkMode } = state;
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -129,7 +129,7 @@ const AdminProducts = () => {
   return (
     <Layout title='Products'>
       <div className={styles.container}>
-        <div className={styles.sideBar}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark} ${styles.darkMode}` : `${styles.sideBar}`}>
           <ul>
             <Link href='/admin/dashboard' passHref>
               <li>Dashboard</li>
@@ -145,7 +145,7 @@ const AdminProducts = () => {
             </Link>
           </ul>
         </div>
-        <div className={styles.dash}>
+        <div className={darkMode ? `${styles.dash} ${styles.dark} ${styles.darkMode}` : `${styles.dash}`}>
           <h1 className={styles.heading}>Admin Dashboard</h1>
           {loading ? (
             <p className={styles.loading}>Loading...</p>
@@ -160,41 +160,43 @@ const AdminProducts = () => {
                   {loadingCreate ? 'Creating... ' : 'Create New Product'}
                 </button>
               </div>
-              <table className={styles.table}>
-                <thead className={styles.borderBottom}>
-                  <tr>
-                    <th className={styles.left}>ID</th>
-                    <th className={styles.left}>NAME</th>
-                    <th className={styles.left}>PRICE</th>
-                    <th className={styles.left}>CATEGORY</th>
-                    <th className={styles.left}>COUNT</th>
-                    <th className={styles.left}>RATING</th>
-                    <th className={styles.left}>ACTION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id} className={styles.borderBottom}>
-                      <td className={styles.name} title={product._id}>
-                        {product._id.substring(20, 24)}
-                      </td>
-                      <td className={styles.name}>{product.name}</td>
-                      <td className={styles.name}>${product.price}</td>
-                      <td className={styles.name}>{product.category}</td>
-                      <td className={styles.name}>{product.countInStock}</td>
-                      <td className={styles.name}>{product.rating}</td>
-                      <td className={`${styles.name} ${styles.action}`}>
-                        <Link href={`/admin/product/${product._id}`} passHref>
-                          <button className={`${styles.btn} ${styles.edit}`}>Edit</button>
-                        </Link>
-                        <button className={`${styles.btn} ${styles.del}`} onClick={() => deleteHandler(product._id)}>
-                          Delete
-                        </button>
-                      </td>
+              <div className={styles.overflow}>
+                <table className={styles.table}>
+                  <thead className={styles.borderBottom}>
+                    <tr>
+                      <th className={styles.left}>ID</th>
+                      <th className={styles.left}>NAME</th>
+                      <th className={styles.left}>PRICE</th>
+                      <th className={styles.left}>CATEGORY</th>
+                      <th className={styles.left}>COUNT</th>
+                      <th className={styles.left}>RATING</th>
+                      <th className={styles.left}>ACTION</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {products.map((product) => (
+                      <tr key={product._id} className={styles.borderBottom}>
+                        <td className={styles.name} title={product._id}>
+                          {product._id.substring(20, 24)}
+                        </td>
+                        <td className={styles.name}>{product.name}</td>
+                        <td className={styles.name}>${product.price}</td>
+                        <td className={styles.name}>{product.category}</td>
+                        <td className={styles.name}>{product.countInStock}</td>
+                        <td className={styles.name}>{product.rating}</td>
+                        <td className={`${styles.name} ${styles.action}`}>
+                          <Link href={`/admin/product/${product._id}`} passHref>
+                            <button className={`${styles.btn} ${styles.edit}`}>Edit</button>
+                          </Link>
+                          <button className={`${styles.btn} ${styles.del}`} onClick={() => deleteHandler(product._id)}>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>

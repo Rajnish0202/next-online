@@ -2,24 +2,25 @@
   margin: auto auto;
   max-width: 768px;
   padding: 10px;
+  min-height: 100vh;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+  border-radius: 10px;
 }
 
 .heading {
   margin-bottom: 16px;
   font-size: 20px;
   line-height: 28px;
-  color: #000;
 }
 
 .input {
   margin-bottom: 10px;
   font-size: 18px;
   font-weight: 500;
-  color: #000;
 }
 
 .dark {
-  color: #fff;
+  box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
 }
 
 .label {

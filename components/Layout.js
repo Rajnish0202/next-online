@@ -1,22 +1,51 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import styles from '../styles/Layout.module.css';
 import { Store } from '../utils/Store';
 import { FaToggleOff, FaToggleOn } from 'react-icons/fa';
+import { HiBars3 } from 'react-icons/hi2';
+import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { IoSearchCircleOutline } from 'react-icons/io5';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { getError } from '../utils/error';
 
 const Layout = ({ children, title, description }) => {
   const [badge, setBadge] = useState(false);
   const [show, setShow] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [query, setQuery] = useState('');
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
+  const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
 
+  const fetchCategories = async () => {
+    try {
+      const { data } = await axios.get(`/api/products/categories`);
+      setCategories(data);
+    } catch (error) {
+      enqueueSnackbar(getError(error), { variant: 'error' });
+    }
+  };
+
+  const queryChangeHandler = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
+  };
+
   useEffect(() => {
     cart ? setBadge(true) : setBadge(false);
+    fetchCategories();
   }, [cart]);
 
   const darkModeChangeHandler = () => {
@@ -49,6 +78,14 @@ const Layout = ({ children, title, description }) => {
     </div>
   );
 
+  const sidebarOpenHandler = () => {
+    setSidebarVisible(true);
+  };
+
+  const sidebarCloseHandler = () => {
+    setSidebarVisible(false);
+  };
+
   return (
     <>
       <Head>
@@ -59,9 +96,39 @@ const Layout = ({ children, title, description }) => {
       <div className={styles.layout}>
         <header className={styles.header}>
           <nav className={styles.nav}>
-            <Link href='/' className={styles.logo}>
-              Next Online
-            </Link>
+            <div className={styles.logoBox}>
+              <button className={styles.bar} onClick={sidebarOpenHandler}>
+                <HiBars3 size={30} />
+              </button>
+              <Link href='/' className={styles.logo}>
+                Next Online
+              </Link>
+            </div>
+            {sidebarVisible && (
+              <div className={styles.sideBar}>
+                <ul>
+                  <li className={styles.top}>
+                    <p>Shopping by category</p>
+                    <button className={styles.close} onClick={sidebarCloseHandler}>
+                      <IoMdCloseCircleOutline size={25} />
+                    </button>
+                  </li>
+                  {categories.map((category) => (
+                    <Link href={`/search?category=${category}`} key={category} passHref>
+                      <li>{category}</li>
+                    </Link>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className={styles.center}>
+              <form className={styles.input} onSubmit={submitHandler}>
+                <input type='text' placeholder='Search products' name='query' onChange={queryChangeHandler} />
+                <button className={styles.searchBtn}>
+                  <IoSearchCircleOutline />
+                </button>
+              </form>
+            </div>
             <div className={styles.right}>
               <div className={styles.switch} onClick={darkModeChangeHandler}>
                 {darkMode ? (

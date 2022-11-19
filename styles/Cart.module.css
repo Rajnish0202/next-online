@@ -9,6 +9,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
+  min-height: 100vh;
 }
 
 .overflow {
@@ -94,7 +95,7 @@
 }
 
 .dark {
-  border: 2px solid #fff;
+  box-shadow: rgba(255, 255, 255, 0.3) 0px 7px 29px 0px;
 }
 .link {
   color: blue;
@@ -134,4 +135,14 @@
   text-transform: capitalize;
   border-bottom: 2px solid gray;
   line-height: 46px;
+}
+
+@media screen and (max-width: 768px) {
+  .overflow {
+    grid-column: span 4;
+  }
+
+  .checkout {
+    grid-column: span 4;
+  }
 }

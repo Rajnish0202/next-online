@@ -9,6 +9,7 @@ import { Store } from '../utils/Store';
 import { useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 import Cookies from 'js-cookie';
+import Link from 'next/link';
 
 const Profile = () => {
   const { state, dispatch } = useContext(Store);
@@ -64,73 +65,87 @@ const Profile = () => {
 
   return (
     <Layout title={`Profile`}>
-      <h1 className={styles.heading}>Update Profile</h1>
-      <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
-        {/* <h1 className={darkMode ? `${styles.heading} ${styles.dark}` : `${styles.heading}`}>Register</h1> */}
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
-          <label htmlFor='name'>Name</label>
-          <input
-            type='text'
-            id='name'
-            placeholder='Name'
-            {...register('name', {
-              required: 'Name is required!',
-              minLength: { value: 2, message: 'Name must have at least 2 characters' },
-              maxLength: { value: 30, message: 'Name not more than 30 characters' },
-            })}
-          />
-          {errors.name && <div className={styles.error}>{errors.name.message}</div>}
+      <div className={styles.container}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark}` : `${styles.sideBar}`}>
+          <ul>
+            <Link href='/profile' passHref>
+              <li className={styles.active}>Update Profile</li>
+            </Link>
+            <Link href='/order-history' passHref>
+              <li>My Orders</li>
+            </Link>
+          </ul>
         </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
-          <label htmlFor='email'>Email</label>
-          <input
-            type='email'
-            id='email'
-            placeholder='Email'
-            {...register('email', {
-              required: 'Email is required!',
-              pattern: {
-                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
-                message: 'Email is not valid!',
-              },
-            })}
-          />
-          {errors.email && <div className={styles.error}>{errors.email.message}</div>}
+        <div className={darkMode ? `${styles.formSection} ${styles.dark}` : `${styles.formSection}`}>
+          <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
+            <h1 className={styles.heading}>Update Profile</h1>
+
+            <div className={styles.input}>
+              <label htmlFor='name'>Name</label>
+              <input
+                type='text'
+                id='name'
+                placeholder='Name'
+                {...register('name', {
+                  required: 'Name is required!',
+                  minLength: { value: 2, message: 'Name must have at least 2 characters' },
+                  maxLength: { value: 30, message: 'Name not more than 30 characters' },
+                })}
+              />
+              {errors.name && <div className={styles.error}>{errors.name.message}</div>}
+            </div>
+            <div className={styles.input}>
+              <label htmlFor='email'>Email</label>
+              <input
+                type='email'
+                id='email'
+                placeholder='Email'
+                {...register('email', {
+                  required: 'Email is required!',
+                  pattern: {
+                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+                    message: 'Email is not valid!',
+                  },
+                })}
+              />
+              {errors.email && <div className={styles.error}>{errors.email.message}</div>}
+            </div>
+            <div className={styles.input}>
+              <label htmlFor='password'>Password</label>
+              <input
+                type='password'
+                id='password'
+                placeholder='Password'
+                {...register('password', {
+                  minLength: { value: 6, message: 'Password must have at least 6 characters' },
+                })}
+              />
+              {errors.password && <div className={styles.error}>{errors.password.message}</div>}
+            </div>
+            <div className={styles.input}>
+              <label htmlFor='confirmPassword'>Confirm Password</label>
+              <input
+                type='password'
+                id='confirmPassword'
+                placeholder='Confirm Password'
+                {...register('confirmPassword', {
+                  validate: (value) => value === getValues('password'),
+                  minLength: { value: 6, message: 'Password must have at least 6 characters' },
+                })}
+              />
+              {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword.message}</div>}
+              {errors.confirmPassword && errors.confirmPassword.type === 'validate' && (
+                <div className={styles.error}>Password do not match</div>
+              )}
+            </div>
+            <div className={styles.input}>
+              <button className={styles.button} style={{ width: '100%' }}>
+                Update Profile
+              </button>
+            </div>
+          </form>
         </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
-          <label htmlFor='password'>Password</label>
-          <input
-            type='password'
-            id='password'
-            placeholder='Password'
-            {...register('password', {
-              minLength: { value: 6, message: 'Password must have at least 6 characters' },
-            })}
-          />
-          {errors.password && <div className={styles.error}>{errors.password.message}</div>}
-        </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
-          <label htmlFor='confirmPassword'>Confirm Password</label>
-          <input
-            type='password'
-            id='confirmPassword'
-            placeholder='Confirm Password'
-            {...register('confirmPassword', {
-              validate: (value) => value === getValues('password'),
-              minLength: { value: 6, message: 'Password must have at least 6 characters' },
-            })}
-          />
-          {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword.message}</div>}
-          {errors.confirmPassword && errors.confirmPassword.type === 'validate' && (
-            <div className={styles.error}>Password do not match</div>
-          )}
-        </div>
-        <div className={styles.input}>
-          <button className={styles.button} style={{ width: '100%' }}>
-            Update Profile
-          </button>
-        </div>
-      </form>
+      </div>
     </Layout>
   );
 };

@@ -46,10 +46,10 @@ const Payment = () => {
   return (
     <Layout titile='Payment Method'>
       <CheckoutWizard activeStep={2} />
-      <form className={styles.form} onSubmit={submitHandler}>
-        <h1 className={darkMode ? `${styles.heading} ${styles.dark}` : `${styles.heading}`}>Payment Method</h1>
-        {['PayPal', 'Stripe', 'CashOnDelivery'].map((payment) => (
-          <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`} key={payment}>
+      <form className={darkMode ? `${styles.form} ${styles.dark}` : `${styles.form}`} onSubmit={submitHandler}>
+        <h1 className={styles.heading}>Payment Method</h1>
+        {['PayPal', 'CashOnDelivery'].map((payment) => (
+          <div className={styles.input} key={payment}>
             <input
               type='radio'
               name='paymentMethod'

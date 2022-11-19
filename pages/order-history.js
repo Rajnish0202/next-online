@@ -56,47 +56,63 @@ const OrderHistory = () => {
 
   return (
     <Layout title={`Orders History`}>
-      <h1 className={styles.heading}>Order History</h1>
-      {loading ? (
-        <p className={styles.loading}>Loading...</p>
-      ) : error ? (
-        <p className={styles.error}>{error}</p>
-      ) : (
-        <div className={styles.cartItem}>
-          <div className={darkMode ? `${styles.overflow} ${styles.dark}` : styles.overflow}>
-            <table className={styles.table}>
-              <thead className={styles.borderBottom}>
-                <tr>
-                  <th className={styles.left}>ID</th>
-                  <th className={styles.left}>DATE</th>
-                  <th className={styles.left}>TOTAL</th>
-                  <th className={styles.left}>PAID</th>
-                  <th className={styles.left}>DELIVERED</th>
-                  <th className={styles.left}>ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order._id} className={styles.borderBottom}>
-                    <td className={styles.name}>{order._id.substring(20, 24)}</td>
-                    <td className={styles.name}>{order.createdAt.substring(0, 10)}</td>
-                    <td className={styles.name}>${order.totalPrice}</td>
-                    <td className={styles.name}>{order.isPaid ? `${order.paidAt.substring(0, 10)}` : 'Not paid'}</td>
-                    <td className={styles.name}>
-                      {order.isDelivered ? `${order.deliveredAt.substring(0, 10)}` : 'Not delivered'}
-                    </td>
-                    <td className={styles.name}>
-                      <Link href={`/order/${order._id}`} passHref>
-                        <button className={styles.btn}>Details</button>
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      <div className={styles.container}>
+        <div className={darkMode ? `${styles.sideBar} ${styles.dark}` : `${styles.sideBar}`}>
+          <ul>
+            <Link href='/profile' passHref>
+              <li>Update Profile</li>
+            </Link>
+            <Link href='/order-history' passHref>
+              <li className={styles.active}>My Orders</li>
+            </Link>
+          </ul>
         </div>
-      )}
+        <div className={darkMode ? `${styles.section} ${styles.dark}` : `${styles.section}`}>
+          <h1 className={styles.heading}>Order History</h1>
+          {loading ? (
+            <p className={styles.loading}>Loading...</p>
+          ) : error ? (
+            <p className={styles.error}>{error}</p>
+          ) : (
+            <div className={styles.cartItem}>
+              <div className={styles.overflow}>
+                <table className={styles.table}>
+                  <thead className={styles.borderBottom}>
+                    <tr>
+                      <th className={styles.left}>ID</th>
+                      <th className={styles.left}>DATE</th>
+                      <th className={styles.left}>TOTAL</th>
+                      <th className={styles.left}>PAID</th>
+                      <th className={styles.left}>DELIVERED</th>
+                      <th className={styles.left}>ACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order._id} className={styles.borderBottom}>
+                        <td className={styles.name}>{order._id.substring(20, 24)}</td>
+                        <td className={styles.name}>{order.createdAt.substring(0, 10)}</td>
+                        <td className={styles.name}>${order.totalPrice}</td>
+                        <td className={styles.name}>
+                          {order.isPaid ? `${order.paidAt.substring(0, 10)}` : 'Not paid'}
+                        </td>
+                        <td className={styles.name}>
+                          {order.isDelivered ? `${order.deliveredAt.substring(0, 10)}` : 'Not delivered'}
+                        </td>
+                        <td className={styles.name}>
+                          <Link href={`/order/${order._id}`} passHref>
+                            <button className={styles.btn}>Details</button>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </Layout>
   );
 };

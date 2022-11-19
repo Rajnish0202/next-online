@@ -21,6 +21,7 @@ const ProductScreen = (props) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
+  const [star, setStar] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const submitHandler = async (e) => {
@@ -60,6 +61,7 @@ const ProductScreen = (props) => {
   };
 
   useEffect(() => {
+    setStar(true);
     fetchReviews();
   }, []);
 
@@ -73,7 +75,7 @@ const ProductScreen = (props) => {
     const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
-      alert('Sorry, Product is out of Stock!');
+      enqueueSnackbar('Sorry, Product is out of Stock!', { variant: 'error' });
       return;
     }
 
@@ -97,8 +99,8 @@ const ProductScreen = (props) => {
             title={product.name}
           />
         </div>
-        <div>
-          <ul>
+        <div className={styles.center}>
+          <ul className={styles.row}>
             <li className={styles.list}>
               <h1>{product.name}</h1>
             </li>
@@ -124,55 +126,55 @@ const ProductScreen = (props) => {
               <p>Description: {product.description}</p>
             </li>
           </ul>
-        </div>
-        <div className={darkMode ? `${styles.card} ${styles.darkShadow}` : `${styles.card}`}>
-          <div className={styles.wrapper}>
-            <div>Price</div>
-            <div className={styles.price}>${product.price}</div>
+          <div className={darkMode ? `${styles.card} ${styles.darkShadow}` : `${styles.card}`}>
+            <div className={styles.wrapper}>
+              <div>Price</div>
+              <div className={styles.price}>${product.price}</div>
+            </div>
+            <div className={styles.wrapper}>
+              <div>Status</div>
+              <div className={styles.status}>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</div>
+            </div>
+            <button className={styles.button} onClick={() => addToCartHandler(product)}>
+              Add to cart
+            </button>
           </div>
-          <div className={styles.wrapper}>
-            <div>Status</div>
-            <div className={styles.status}>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</div>
-          </div>
-          <button className={styles.button} onClick={() => addToCartHandler(product)}>
-            Add to cart
-          </button>
         </div>
       </div>
-      <div className={styles.reviews} id='reviews'>
-        <ul className={styles.listUl}>
-          <li>
+      <div className={darkMode ? `${styles.reviews} ${styles.darkShadow}` : `${styles.reviews}`} id='reviews'>
+        <div className={styles.listUl}>
+          <div>
             <h2 className={styles.heading}>Customer Reviews</h2>
-          </li>
-          <li className={styles.noReview}>{reviews.length === 0 && <p>No review</p>}</li>
+          </div>
+          <div className={styles.noReview}>{reviews.length === 0 && <p>No review</p>}</div>
           {reviews.map((review) => (
-            <li key={review._id} className={styles.commentList}>
+            <div key={review._id} className={styles.commentList}>
               <div className={styles.rightBorder}>
-                <p>
-                  <strong>{review.name}</strong>
-                </p>
+                <strong>
+                  <p>{review.name}</p>
+                </strong>
                 <p>{review.createdAt.substring(0, 10)}</p>
               </div>
               <div>
                 <StarRatings
                   rating={review.rating}
                   starRatedColor='#dfa943'
-                  starDimension='25px'
+                  starDimension='24px'
                   name='rating'
                   starSpacing='0'
                 />
                 <p>{review.comment}</p>
               </div>
-            </li>
+            </div>
           ))}
-          <li>
-            {userInfo ? (
+          <div>
+            {star && userInfo ? (
               <form onSubmit={submitHandler} className={styles.reviewForm}>
-                <ul>
-                  <li>
+                <div className={styles.reviewRow}>
+                  <div className={styles.reviewList}>
                     <p>Leave your review</p>
-                  </li>
-                  <li>
+                  </div>
+                  <div className={styles.reviewList}>
                     <label htmlFor='review'>Enter Comment</label>
                     <textarea
                       name='review'
@@ -181,8 +183,8 @@ const ProductScreen = (props) => {
                       onChange={(e) => setComment(e.target.value)}
                       placeholder='Enter Comment'
                     ></textarea>
-                  </li>
-                  <li>
+                  </div>
+                  <div>
                     <StarRatings
                       rating={rating}
                       changeRating={changeRatingHendler}
@@ -192,17 +194,17 @@ const ProductScreen = (props) => {
                       starSpacing='0'
                       starHoverColor='#f0c000'
                     />
-                  </li>
-                  <li>
+                  </div>
+                  <div>
                     {loading && <p className={styles.loading}>Commenting...</p>}
                     <button className={styles.button} style={{ marginTop: 0 }}>
                       Submit
                     </button>
-                  </li>
-                </ul>
+                  </div>
+                </div>
               </form>
             ) : (
-              <li className={styles.noReview} style={{ fontSize: '18px', fontWeight: 500, letterSpacing: '1px' }}>
+              <div className={styles.noReview} style={{ fontSize: '18px', fontWeight: 500, letterSpacing: '1px' }}>
                 Please{' '}
                 <Link
                   href={`/login?redirect=/product/${product.slug}`}
@@ -211,10 +213,10 @@ const ProductScreen = (props) => {
                   login
                 </Link>{' '}
                 to write a review
-              </li>
+              </div>
             )}
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </Layout>
   );

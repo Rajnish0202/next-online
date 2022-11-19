@@ -16,16 +16,16 @@
 }
 
 .row {
-  overflow-x: auto;
   grid-column: span 3;
-  padding: 10px;
+  padding: 0 10px;
 }
 
 .overflow {
   padding: 20px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
   border-radius: 10px;
   margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .overflow p {
@@ -101,18 +101,14 @@
 
 .checkout {
   padding: 20px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 1.95px 2.6px;
+
   border-radius: 10px;
   height: fit-content;
 }
 
 .dark {
-  /* border: 2px solid #fff; */
-  box-shadow: #64646f33 0px 5px 0px 15px;
-}
-
-.darkText {
-  color: #fff;
+  box-shadow: rgb(255 255 255 / 0.15) -1.05px 6.95px 1.95px 4.6px;
 }
 
 .box {
@@ -200,4 +196,14 @@
 
 .payBtn {
   width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .row {
+    grid-column: span 4;
+  }
+
+  .checkout {
+    grid-column: span 4;
+  }
 }

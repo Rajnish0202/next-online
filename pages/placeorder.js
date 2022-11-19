@@ -78,18 +78,18 @@ const PlaceOrder = () => {
       <h1 className={`${styles.heading} ${styles.mtop}`}>Place Order</h1>
       <div className={styles.cartItem}>
         <div className={styles.row}>
-          <div className={styles.overflow}>
+          <div className={darkMode ? `${styles.overflow} ${styles.dark}` : `${styles.overflow}`}>
             <h2 className={styles.heading}>Shipping Address</h2>
             <p>
               {shippingAddress.fullName}, {shippingAddress.address}, {shippingAddress.city},{' '}
               {shippingAddress.postalCode},{shippingAddress.country}
             </p>
           </div>
-          <div className={styles.overflow}>
+          <div className={darkMode ? `${styles.overflow} ${styles.dark}` : `${styles.overflow}`}>
             <h2 className={styles.heading}>Payment Method</h2>
             <p>{paymentMethod}</p>
           </div>
-          <div className={styles.overflow}>
+          <div className={darkMode ? `${styles.overflow} ${styles.dark}` : `${styles.overflow}`}>
             <h2 className={styles.heading}>Order Items</h2>
             <table className={styles.table}>
               <thead className={styles.borderBottom}>
@@ -125,9 +125,7 @@ const PlaceOrder = () => {
           <ul>
             <li>
               <div className={styles.subtotal}>
-                <h4 className={darkMode ? `${styles.heading} ${styles.darkText}` : `${styles.heading}`}>
-                  Order Summary
-                </h4>
+                <h4 className={styles.heading}>Order Summary</h4>
                 <div className={styles.box}>
                   <p>Items:</p>
                   <p>${itemsPrice}</p>
