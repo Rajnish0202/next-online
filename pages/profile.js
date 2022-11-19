@@ -77,7 +77,7 @@ const Profile = () => {
           </ul>
         </div>
         <div className={darkMode ? `${styles.formSection} ${styles.dark}` : `${styles.formSection}`}>
-          <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
+          <form className={styles.form} style={{ boxShadow: 'none' }} onSubmit={handleSubmit(submitHandler)}>
             <h1 className={styles.heading}>Update Profile</h1>
 
             <div className={styles.input}>

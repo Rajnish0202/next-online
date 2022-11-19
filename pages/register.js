@@ -55,8 +55,11 @@ const Register = () => {
 
   return (
     <Layout title='Register'>
-      <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
-        <h1 className={darkMode ? `${styles.heading} ${styles.dark}` : `${styles.heading}`}>Register</h1>
+      <form
+        className={darkMode ? `${styles.form} ${styles.dark}` : `${styles.form}`}
+        onSubmit={handleSubmit(submitHandler)}
+      >
+        <h1 className={styles.heading}>Register</h1>
         <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
           <label htmlFor='name'>Name</label>
           <input
@@ -71,7 +74,7 @@ const Register = () => {
           />
           {errors.name && <div className={styles.error}>{errors.name.message}</div>}
         </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+        <div className={styles.input}>
           <label htmlFor='email'>Email</label>
           <input
             type='email'
@@ -87,7 +90,7 @@ const Register = () => {
           />
           {errors.email && <div className={styles.error}>{errors.email.message}</div>}
         </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+        <div className={styles.input}>
           <label htmlFor='password'>Password</label>
           <input
             type='password'
@@ -100,7 +103,7 @@ const Register = () => {
           />
           {errors.password && <div className={styles.error}>{errors.password.message}</div>}
         </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+        <div className={styles.input}>
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
             type='password'

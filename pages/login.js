@@ -46,9 +46,12 @@ const LoginScreen = () => {
 
   return (
     <Layout title='User Login'>
-      <form className={styles.form} onSubmit={handleSubmit(submitHandler)}>
-        <h1 className={darkMode ? `${styles.heading} ${styles.dark}` : `${styles.heading}`}>Login</h1>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+      <form
+        className={darkMode ? `${styles.form} ${styles.dark}` : `${styles.form}`}
+        onSubmit={handleSubmit(submitHandler)}
+      >
+        <h1 className={styles.heading}>Login</h1>
+        <div className={styles.input}>
           <label htmlFor='email'>Email</label>
           <input
             type='email'
@@ -64,7 +67,7 @@ const LoginScreen = () => {
           />
           {errors.email && <div className={styles.error}>{errors.email.message}</div>}
         </div>
-        <div className={darkMode ? `${styles.input} ${styles.dark}` : `${styles.input}`}>
+        <div className={styles.input}>
           <label htmlFor='password'>Password</label>
           <input
             type='password'
