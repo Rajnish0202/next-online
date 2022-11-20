@@ -241,14 +241,7 @@ const ProductEdit = ({ params }) => {
                 </div>
                 <div className={styles.input}>
                   <label htmlFor='featuredImage'>Featured Image</label>
-                  <input
-                    type='text'
-                    id='featuredImage'
-                    placeholder='Featured Image'
-                    {...register('featuredImage', {
-                      required: 'Featured Image is required!',
-                    })}
-                  />
+                  <input type='text' id='featuredImage' placeholder='Featured Image' {...register('featuredImage')} />
                   {errors.featuredImage && <div className={styles.error}>{errors.featuredImage.message}</div>}
                 </div>
                 <div className={styles.input}>
